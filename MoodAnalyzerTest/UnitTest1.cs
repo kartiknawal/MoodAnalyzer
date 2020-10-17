@@ -91,9 +91,10 @@ namespace MoodAnalyserTest
             }
             catch (MoodAnalysisCustomException e)
             {
-                Assert.AreEqual("Constructor is Not Found", e.Message);
+                Assert.AreEqual("Constructor Not Found", e.Message);
             }
         }
+        
 
     }
 }
