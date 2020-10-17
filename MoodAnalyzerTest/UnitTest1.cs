@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoodAnalyzerProject;
+using System;
 
 namespace MoodAnalyserTest
 {
@@ -61,7 +62,7 @@ namespace MoodAnalyserTest
         public void Given_MoodAnalyzerClassName_ShouldReturn_MoodAnalyzerObject()
         {
             object expected = new MoodAnalyzer();
-            object obj = MoodAnalyzerFactory.CreateMoodAnalyse("MoodAnalyzerProblem.MoodAnalyze", "MoodAnalyzer");
+            object obj = MoodAnalyzerFactory.CreateMoodAnalyse("MoodAnalyzerProject.MoodAnalyzer", "MoodAnalyzer");
             expected.Equals(obj);
         }
         [TestMethod]
@@ -70,21 +71,22 @@ namespace MoodAnalyserTest
             try
             {
                 object expected = new MoodAnalyzer();
-                object obj = MoodAnalyzerFactory.CreateMoodAnalyse("MoodAnalyzerProblem.MoodAnalyzer", "MoodAnalyzer");
+                object obj = MoodAnalyzerFactory.CreateMoodAnalyse("MoodAnalyzerProject.MoodAnalyyzer", "MoodAnalyyzer");
                 expected.Equals(obj);
             }
             catch (MoodAnalysisCustomException e)
             {
-                Assert.AreEqual("No such class found", e.Message);
+                Assert.AreEqual("Class Not Found", e.Message);
             }
         }
+
         [TestMethod]
         public void Given_ImproperMoodAnalyseConstructor_ShouldReturn_MoodAnalysisException()
         {
             try
             {
                 object expected = new MoodAnalyzer();
-                object obj = MoodAnalyzerFactory.CreateMoodAnalyse("MoodAnalyzerProblem.MoodAnalyzer", "MoodAnalyyzzerr");
+                object obj = MoodAnalyzerFactory.CreateMoodAnalyse("MoodAnalyzerProject.MoodAnalyzer", "MoodAnalyyzerr");
                 expected.Equals(obj);
             }
             catch (MoodAnalysisCustomException e)
@@ -92,5 +94,6 @@ namespace MoodAnalyserTest
                 Assert.AreEqual("Constructor is Not Found", e.Message);
             }
         }
+
     }
 }

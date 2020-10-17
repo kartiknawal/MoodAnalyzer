@@ -11,25 +11,26 @@ namespace MoodAnalyzerProject
     {
         public static object CreateMoodAnalyse(string className, string constructorName)
         {
-            string pattern = @"." + constructorName + "$";
-            Match result = Regex.Match(className, pattern);
-            if (result.Success)
+            string message = null;
+            return CreateMoodAnalyseUsingParameterizedConstructor(className, constructorName, message);
+        }
+
+        public static object CreateMoodAnalyseUsingParameterizedConstructor(string className, string constructorName, string message)
+        {
+            Type type = typeof(MoodAnalyzer);
+            if (type.Name.Equals(className) || type.FullName.Equals(className))
             {
-                try
+                if (type.Name.Equals(constructorName))
                 {
-                    Assembly executing = Assembly.GetExecutingAssembly();
-                    Type moodAnalyseType = executing.GetType(className);
-                    return Activator.CreateInstance(moodAnalyseType);
+                    ConstructorInfo info = type.GetConstructor(new[] { typeof(string) });
+                    object instance = info.Invoke(new object[] { (message) });
+                    return instance;
                 }
-                catch (ArgumentNullException)
-                {
-                    throw new MoodAnalysisCustomException(MoodAnalysisCustomException.ExceptionType.NO_SUCH_CLASS, "Class Not Found");
-                }
+                else
+                    throw new MoodAnalysisCustomException(MoodAnalysisCustomException.ExceptionType.NO_SUCH_METHOD, "Constructor is Not Found");
             }
             else
-            {
-                throw new MoodAnalysisCustomException(MoodAnalysisCustomException.ExceptionType.NO_SUCH_METHOD, "Constructor is Not Found");
-            }
+                throw new MoodAnalysisCustomException(MoodAnalysisCustomException.ExceptionType.NO_SUCH_CLASS, "Class Not Found");
         }
     }
 }
