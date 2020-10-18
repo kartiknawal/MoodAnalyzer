@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace MoodAnalyzerProject
 {
-    public class MoodAnalyzerFactory
+    class MoodAnalyzerRecflector
     {
         public static object CreateMoodAnalyse(string className, string constructorName)
         {
@@ -33,6 +33,21 @@ namespace MoodAnalyzerProject
             }
             else
                 throw new MoodAnalysisCustomException(MoodAnalysisCustomException.ExceptionType.NO_SUCH_CLASS, "Class Not Found");
+        }
+        public static string InvokeAnalyzeMood(string message, string methodName)
+        {
+            try
+            {
+                Type type = Type.GetType("MoodAnalyzerProject.MoodAnalyzer");
+                object moodAnalyserObject = CreateMoodAnalyseUsingParameterizedConstructor("MoodAnalyzerProject.MoodAnalyzer", "MoodAnalyzer", message);
+                MethodInfo method = type.GetMethod(methodName);
+                object mood = method.Invoke(moodAnalyserObject, null);
+                return mood.ToString();
+            }
+            catch (NullReferenceException)
+            {
+                throw new MoodAnalysisCustomException(MoodAnalysisCustomException.ExceptionType.NO_SUCH_METHOD, "Method Not found");
+            }
         }
     }
 }
