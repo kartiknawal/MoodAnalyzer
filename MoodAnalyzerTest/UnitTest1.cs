@@ -134,7 +134,7 @@ namespace MoodAnalyserTest
         public void Given_HappyMood_UsingReflection_When_Proper_Should_Return_Happy()
         {
             string expected = "HAPPY";
-            string mood = MoodAnalyzerRecflector.InvokeAnalyzeMood("Happy", "AnalyzeMood");
+            string mood = MoodAnalyzerRecflector.InvokeAnalyzeMood("Happy", "AnalyseMood");
             Assert.AreEqual(expected, mood);
         }
         [TestMethod]
@@ -148,9 +148,41 @@ namespace MoodAnalyserTest
             }
             catch (MoodAnalysisCustomException e)
             {
-                Assert.AreEqual("Constructor Not Found", e.Message);
+                Assert.AreEqual("Method Not Found", e.Message);
             }
         }
 
+        [TestMethod]
+        public void Given_HappyMessageWithReflector_Should_Return_Happy()
+        {
+            string expected = "HAPPY";
+            string result = MoodAnalyzerRecflector.SetField("HAPPY", "message");
+            Assert.AreEqual(expected, result);
+        }
+        [TestMethod]
+        public void Given_HappyMessageImproperField_Should_Throw_MoodAnalysisCustomException()
+        {
+            try
+            {
+                string result = MoodAnalyzerRecflector.SetField("HAPPY", "any");
+            }
+            catch (MoodAnalysisCustomException e)
+            {
+                Assert.AreEqual("Field not found", e.Message);
+            }
+        }
+        [TestMethod]
+        public void Given_NullMessageWithReflection_Should_Throw_MoodAnalysisCustomException()
+        {
+            try
+            {
+                string message = null;
+                string result = MoodAnalyzerRecflector.SetField(message, "message");
+            }
+            catch (MoodAnalysisCustomException e)
+            {
+                Assert.AreEqual("Message should not be null", e.Message);
+            }
+        }
     }
 }
