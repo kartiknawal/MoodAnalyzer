@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace MoodAnalyzerProject
 {
-    class MoodAnalyzerRecflector
+    public class MoodAnalyzerRecflector
     {
         public static object CreateMoodAnalyse(string className, string constructorName)
         {
